@@ -73,7 +73,7 @@ const CarRegister = () => {
   return (
     <>
         <Navbar/>
-        <div className="max-w-md mx-auto p-4 space-y-4">
+        <div className="max-w-md h-[90vh] mx-auto p-4 space-y-4">
   <h3 className="text-lg font-semibold">Add Product</h3>
   <input
     className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"

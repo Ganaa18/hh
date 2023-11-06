@@ -1,8 +1,29 @@
+'use client'
 import Navbar from '../../components/Navbar';
 import React, { useState } from 'react';
-
+import {auth} from "@/store/firebase"
+import {signInWithEmailAndPassword, signInWithPopup} from 'firebase/auth'
+import { googleProvider } from '@/store/firebase';
 const Login = () => {
-  return (<>
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+    const submit =  async () =>{
+      try{
+        await signInWithEmailAndPassword(auth,email,password);
+        console.log(auth,"user");
+      }catch(err){
+        console.error(err);
+      }
+    }
+    const signInWithGoogle = async () => {
+      try {
+        signInWithPopup(auth, googleProvider);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+   return (<>
     <Navbar/>
     <div className="min-h-screen flex items-center justify-center ">
       <div className="bg-white p-8 rounded shadow-md w-96" >
@@ -14,6 +35,7 @@ const Login = () => {
               type="email"
               id="email"
               className="w-full p-2 border rounded"
+              onChange={(e)=>{setEmail(e.target.value)}}
             />
           </div>
           <div className="mb-4">
@@ -22,11 +44,13 @@ const Login = () => {
               type="password"
               id="password"
               className="w-full p-2 border rounded"
+              onChange={(e)=>{setPassword(e.target.value)}}
             />
           </div>
-          <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
+          <button onClick={submit} type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
             Login
           </button>
+          <button onClick={signInWithGoogle}>login whit google</button>
         </form>
       </div>
     </div>
