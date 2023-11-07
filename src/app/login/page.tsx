@@ -4,10 +4,11 @@ import React, { useState } from 'react';
 import {auth} from "@/store/firebase"
 import {signInWithEmailAndPassword, signInWithPopup} from 'firebase/auth'
 import { googleProvider } from '@/store/firebase';
+import {useUser} from '@/context/UserContext'
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const user = useUser();
     const submit =  async () =>{
       try{
         await signInWithEmailAndPassword(auth,email,password);
@@ -19,6 +20,7 @@ const Login = () => {
     const signInWithGoogle = async () => {
       try {
         signInWithPopup(auth, googleProvider);
+        console.log(user);
       } catch (err) {
         console.error(err);
       }
@@ -47,10 +49,12 @@ const Login = () => {
               onChange={(e)=>{setPassword(e.target.value)}}
             />
           </div>
+          <div className='container mx-auto flex justify-between items-center'>
           <button onClick={submit} type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
             Login
           </button>
-          <button onClick={signInWithGoogle}>login whit google</button>
+          <button onClick={signInWithGoogle} className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">login whit google</button>
+          </div>
         </form>
       </div>
     </div>

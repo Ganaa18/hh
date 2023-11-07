@@ -21,22 +21,27 @@ const NewsFeed = () => {
     }, 100); // Adjust the interval for your desired typing speed
     return () => clearInterval(textInterval);
   }, []);
+
   return (
-    <div>
-       <div className="h-screen flex flex-col items-center justify-center bg-gray-900">
-      <div className="text-white text-5xl font-bold text-center">
-        <p>Welcome to our page</p>
-        <div className="text-xl mt-4">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500 animate-pulse">
-            Writing Animation
-          </span>
-        </div>
-      </div>
-      <div className="text-white text-xl mt-6 text-center">
-        <p>{text}</p>
-      </div>
+    <>
+<div className="h-screen flex flex-col items-center justify-center" style={{ background: 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6))', color: 'white' }}>
+  <img src="https://imgs.search.brave.com/yOpRp52oUm3Bb3KQ39kEA__KYYRkH7qI92JhA83pN9c/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9jZG4u/cGl4YWJheS5jb20v/cGhvdG8vMjAxNS8w/Ny8wNS8xMC8xOC90/cmVlLTgzMjA3OV82/NDAuanBn" alt="img" style={{ objectFit: 'cover', width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: -1 }} />
+  <div className="text-5xl font-bold text-center">
+    <p>Welcome to our page</p>
+    <div className="text-xl mt-4">
+      <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500 animate-pulse">
+        Writing Animation
+      </span>
     </div>
-      <header className="bg-blue-900 text-white py-5">
+  </div>
+  <div className="text-xl mt-6 text-center">
+    <p>{text}</p>
+  </div>
+</div>
+
+
+
+    <header className="bg-blue-900 text-white py-5">
         <div className="container flex flex-col justify-center pl-[10vw]  mx-auto block h-[90vh]">
           <h1 className="text-3xl font-bold">Welcome E-Commerce site</h1>
           <p className="text-lg">A sample home page</p>
@@ -45,28 +50,7 @@ const NewsFeed = () => {
           </Link>
         </div>
       </header>
-
-      <main className="container h-inherit  flex flex-col justify-center bg-gray-600 text-white py-5">
-        <section>
-          <div className='h-[100vh] w-[100vw] flex flex-col justify-center' >
-          <h2 className="text-2xl font-semibold">About Us</h2>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.
-            Sed nisi.
-          </p>
-          </div>
-        </section>
-        <section >
-          <div className='h-[100vh] flex flex-col justify-center ' >
-          <h2 className="text-2xl font-semibold">Trending</h2>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae porro natus aliquid modi maiores aliquam, eligendi illum fugiat impedit veritatis, pariatur quae officia atque possimus nulla dolorum deleniti, omnis harum!
-          </p>
-          </div>
-        </section>
-      </main>
-    </div>
+    </>
   );
 };
 

@@ -1,10 +1,30 @@
+'use client'
 import Navbar from '../../components/Navbar';
 import React, { useState } from 'react';
-
+import { auth } from '@/store/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useUser } from '@/context/UserContext';
 const SignUp = () => {
+  const [email, setNewEmail] = useState('');
+  const [password, setNewPassword] = useState('');
+  const user = useUser();
+  const Singinn = async ()=>{
+    try{
+      await signInWithEmailAndPassword(auth,email,password);
+      console.log(user,'sign up success');
+    }catch(err){
+      console.error(err);
+    }
+  }
+  
+  if(user){
+    console.log(user);
+  };
+
+
   return (<>
     <Navbar/>
-    <div className="min-h-screen flex items-center justify-center ">
+    <div className="h-[87vh] flex items-center justify-center ">
       <div className="bg-white p-8 rounded shadow-md w-96" >
         <h2 className="text-2xl font-bold mb-4">Sign up</h2>
         <form>
@@ -14,6 +34,7 @@ const SignUp = () => {
               type="email"
               id="email"
               className="w-full p-2 border rounded"
+              onChange={(e) =>{setNewEmail(e.target.value)}}
             />
           </div>
           <div className="mb-4">
@@ -22,9 +43,10 @@ const SignUp = () => {
               type="password"
               id="password"
               className="w-full p-2 border rounded"
+              onChange={(e) =>{setNewPassword(e.target.value)}}
             />
           </div>
-          <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
+          <button onClick={Singinn} type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700">
             Sign up
           </button>
         </form>

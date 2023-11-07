@@ -18,8 +18,9 @@ const CarRegister = () => {
     const [productName, setNewProductName] = useState("");
     const [productPrice, setNewProductPrice] = useState(0);
     const [productOwner, setNewProductOwner] = useState("");
-  
-  const productCollectionRef = collection(db, "products");
+    const [productType, setProductType] = useState(""); 
+    
+    const productCollectionRef = collection(db, "products");
 
   const [fileUpload, setFileUpload] = useState(null);
   const onSubmitProduct = async () => {
@@ -27,13 +28,14 @@ const CarRegister = () => {
       const madeYearTimestamp = Timestamp.fromDate(new Date(productDate));
       const product = {
         comment: productComment,
-        condition : productCondition,
-        contactInfo : productContactInfo,
+        condition: productCondition,
+        contactInfo: productContactInfo,
         date: madeYearTimestamp,
-        imageURL : productImageURL,
-        name : productName,
-        ownerId : productOwner,
-        price : productPrice
+        imageURL: productImageURL, // This will be updated after image upload
+        name: productName,
+        ownerId: productOwner,
+        price: productPrice,
+        type: productType
       };
   
       const productRef = await addDoc(productCollectionRef, product);
@@ -43,37 +45,35 @@ const CarRegister = () => {
       const fileFolderRef = ref(storage, `productImages/${imageName}`);
   
       if (fileUpload) {
-        const uploadImagePromise = uploadBytes(fileFolderRef, fileUpload)
-          .then(() => getDownloadURL(fileFolderRef))
-          .then((imageURL) => {
-            product.imageURL = imageURL;
-          });
-        await Promise.all([uploadImagePromise]);
-
+        await uploadBytes(fileFolderRef, fileUpload)
+        const imageURL = await getDownloadURL(fileFolderRef);
+  
         await updateDoc(doc(db, "products", productRef.id), {
-          imageURL: product.imageURL,
+          imageURL: imageURL, // Update imageURL with the actual URL
         });
+  
+        // Update the state with the actual URL
+        setNewProductImageURL(imageURL);
       }
   
-        setNewProductCondition("");
-        setNewProductContactInfo("");
-        setNewProductComment("");
-        setNewProductDate(new Date());
-        setNewProductImageURL(product.imageURL);
-        setNewProductName("");
-        setNewProductPrice(0);
-        setNewProductOwner("");
-    
+      setNewProductCondition("");
+      setNewProductContactInfo("");
+      setNewProductComment("");
+      setNewProductDate(new Date());
+      setNewProductName("");
+      setNewProductPrice(0);
+      setNewProductOwner("");
   
       console.log("Car data and image added successfully");
     } catch (err) {
       console.error(err);
     }
   };
+  
   return (
     <>
         <Navbar/>
-        <div className="max-w-md h-[90vh] mx-auto p-4 space-y-4">
+        <div className="max-w-md h-[100vh] mx-auto p-4 pt-[100px] space-y-4 items-center">
   <h3 className="text-lg font-semibold">Add Product</h3>
   <input
     className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
@@ -81,6 +81,17 @@ const CarRegister = () => {
     type="text"
     onChange={(e) => setNewProductCondition(e.target.value)}
   />
+    <select
+  className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+  onChange={(e) => setProductType(e.target.value)}
+  value={productType}
+>
+  <option value="">Select Product Type</option>
+  <option value="notebook">Notebook</option>
+  <option value="electronProduct">Electron baraa</option>
+  <option value="clothes">Huwtsas hereglel</option>
+  <option value="other">Other</option>
+</select>
   <input
     className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
     placeholder="Contact Info"
@@ -111,7 +122,6 @@ const CarRegister = () => {
     type="text"
     onChange={(e) => setNewProductOwner(e.target.value)}
   />
-  
   <input type="file" onChange={(e) => {
   const selectedFile : File | null | any = e.target.files ? e.target.files[0] : null;
   setFileUpload(selectedFile || defaultImage);
