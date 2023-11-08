@@ -1,17 +1,20 @@
 "use client";
 import Navbar from "../../components/Navbar";
+import { useRouter } from 'next/navigation'
 import React, { useState } from "react";
 import { auth } from "@/store/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useUser } from "@/context/UserContext";
 const SignUp = () => {
+  const router = useRouter();
   const [email, setNewEmail] = useState("");
   const [password, setNewPassword] = useState("");
   const user = useUser();
   const Singinn = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       console.log(user, "sign up success");
+      user && router.push("/");
     } catch (err) {
       console.error(err);
     }
@@ -27,7 +30,7 @@ const SignUp = () => {
       <div className="h-[87vh] flex items-center justify-center ">
         <div className="bg-white p-8 rounded shadow-md w-96">
           <h2 className="text-2xl font-bold mb-4">Sign up</h2>
-          <form>
+          <div>
             <div className="mb-4">
               <label
                 htmlFor="email"
@@ -67,7 +70,7 @@ const SignUp = () => {
             >
               Sign up
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </>

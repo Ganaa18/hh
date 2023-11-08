@@ -4,8 +4,10 @@ import React from 'react';
 import {useState, useEffect} from 'react';
 
 import Link from 'next/link';
+import { useUser } from '@/context/UserContext'
 
 const NewsFeed = () => {
+  const user = useUser();
   const [text, setText] = useState('');
   const fullText = 'What are you looking for?';
 
@@ -30,7 +32,7 @@ const NewsFeed = () => {
     <p>Welcome to our page</p>
     <div className="text-xl mt-4">
       <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500 animate-pulse">
-        Writing Animation
+       {user && user?.user?.displayName}
       </span>
     </div>
   </div>

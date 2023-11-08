@@ -10,22 +10,12 @@ import type { User } from "firebase/auth";
 
 type UserContextType = {
   user: User | null;
-  signInWithGoogle: () => void;
 };
 
 const UserContext = createContext<UserContextType | null>(null);
 
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  async function signInWithGoogle() {
-    const provider = new GoogleAuthProvider();
-
-    try {
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      console.error("Error signing in with Google", error);
-    }
-  }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
@@ -40,7 +30,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, [auth]);
 
   return (
-    <UserContext.Provider value={{ user, signInWithGoogle }}>
+    <UserContext.Provider value={{ user }}>
       {children}
     </UserContext.Provider>
   );
